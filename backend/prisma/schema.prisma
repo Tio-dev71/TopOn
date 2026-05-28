@@ -1,0 +1,420 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum Role {
+  REVIEWER
+  ADVERTISER
+  ADMIN
+}
+
+enum CampaignType {
+  AWARENESS
+  SALES
+  REVIEW
+  CHECKIN
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+}
+
+enum ContentStatus {
+  SUBMITTED
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+  LOCKED
+}
+
+enum ContentType {
+  IMAGE
+  VIDEO
+  TEXT
+  LINK
+}
+
+enum TransactionType {
+  TOPUP
+  ASSIGN
+  REFUND
+  WITHDRAW
+  SYSTEM
+}
+
+enum WithdrawalStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+enum Platform {
+  FACEBOOK
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+}
+
+enum NotificationType {
+  CAMPAIGN_INVITE
+  APPLICATION_APPROVED
+  APPLICATION_REJECTED
+  CONTENT_APPROVED
+  CONTENT_REJECTED
+  CONTENT_CHANGES_REQUESTED
+  PAYMENT_RECEIVED
+  WITHDRAWAL_PROCESSED
+  NEW_RATING
+  SYSTEM
+}
+
+// ==================== USERS ====================
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  passwordHash    String?
+  role            Role      @default(REVIEWER)
+  googleId        String?   @unique
+  facebookId      String?   @unique
+  isVerified      Boolean   @default(false)
+  isActive        Boolean   @default(true)
+  twoFaEnabled    Boolean   @default(false)
+  twoFaSecret     String?
+  verifyToken     String?
+  resetToken      String?
+  resetTokenExp   DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  profile           Profile?
+  reviewerProfile   ReviewerProfile?
+  advertiserProfile AdvertiserProfile?
+  wallet            Wallet?
+  notifications     Notification[]
+  ratingsGiven      Rating[]          @relation("RatingsGiven")
+  ratingsReceived   Rating[]          @relation("RatingsReceived")
+  refreshTokens     RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ==================== PROFILES ====================
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  fullName    String?
+  avatarUrl   String?
+  bio         String?
+  phone       String?
+  address     String?
+  city        String?
+  fields      String[] // Lĩnh vực hoạt động
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model ReviewerProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  igHandle        String?
+  tiktokHandle    String?
+  ytHandle        String?
+  fbHandle        String?
+  followersIg     Int      @default(0)
+  followersTiktok Int      @default(0)
+  followersYt     Int      @default(0)
+  followersFb     Int      @default(0)
+  engagementRate  Float    @default(0)
+  specialties     String[]
+  avgRating       Float    @default(0)
+  totalCampaigns  Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookmarks   Bookmark[]
+  applications CampaignApplication[]
+
+  @@map("reviewer_profiles")
+}
+
+model AdvertiserProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  companyName String?
+  logoUrl     String?
+  website     String?
+  description String?
+  industry    String?
+  taxCode     String?
+  avgRating   Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaigns Campaign[]
+
+  @@map("advertiser_profiles")
+}
+
+// ==================== CAMPAIGNS ====================
+
+model Campaign {
+  id                  String         @id @default(uuid())
+  advertiserId        String
+  title               String
+  description         String
+  type                CampaignType   @default(REVIEW)
+  objectives          String?
+  contentRequirements String?
+  budgetTotal         Float          @default(0)
+  budgetPerReviewer   Float          @default(0)
+  maxReviewers        Int            @default(10)
+  deadline            DateTime?
+  startDate           DateTime?
+  endDate             DateTime?
+  status              CampaignStatus @default(DRAFT)
+  platforms           Platform[]
+  categories          String[]
+  coverUrl            String?
+  productImages       String[]
+  isFeatured          Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  advertiser   AdvertiserProfile     @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  applications CampaignApplication[]
+  budgetAllocations BudgetAllocation[]
+
+  @@map("campaigns")
+}
+
+model CampaignApplication {
+  id           String            @id @default(uuid())
+  campaignId   String
+  reviewerId   String
+  status       ApplicationStatus @default(PENDING)
+  note         String?
+  appliedAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  campaign  Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  reviewer  ReviewerProfile @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  contents  CampaignContent[]
+
+  @@unique([campaignId, reviewerId])
+  @@map("campaign_applications")
+}
+
+model CampaignContent {
+  id            String        @id @default(uuid())
+  applicationId String
+  contentUrls   String[]
+  contentType   ContentType   @default(IMAGE)
+  caption       String?
+  link          String?
+  status        ContentStatus @default(SUBMITTED)
+  reviewNotes   String?
+  submittedAt   DateTime      @default(now())
+  reviewedAt    DateTime?
+  updatedAt     DateTime      @updatedAt
+
+  application   CampaignApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  approvalLogs  ContentApprovalLog[]
+
+  @@map("campaign_contents")
+}
+
+model ContentApprovalLog {
+  id        String        @id @default(uuid())
+  contentId String
+  action    ContentStatus
+  note      String?
+  by        String
+  createdAt DateTime      @default(now())
+
+  content CampaignContent @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@map("content_approval_logs")
+}
+
+// ==================== PAYMENTS ====================
+
+model Wallet {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  balance      Float    @default(0)
+  lockedBalance Float   @default(0)
+  currency     String   @default("VND")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+  withdrawals  WithdrawalRequest[]
+
+  @@map("wallets")
+}
+
+model WalletTransaction {
+  id          String          @id @default(uuid())
+  walletId    String
+  type        TransactionType
+  amount      Float
+  balanceAfter Float
+  referenceId String?
+  description String?
+  meta        Json?
+  createdAt   DateTime        @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@map("wallet_transactions")
+}
+
+model BudgetAllocation {
+  id           String   @id @default(uuid())
+  campaignId   String
+  allocatedAmt Float
+  usedAmt      Float    @default(0)
+  createdAt    DateTime @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@map("budget_allocations")
+}
+
+model WithdrawalRequest {
+  id             String           @id @default(uuid())
+  walletId       String
+  amount         Float
+  bankName       String?
+  accountNumber  String?
+  accountName    String?
+  paypalEmail    String?
+  status         WithdrawalStatus @default(PENDING)
+  adminNote      String?
+  processedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@map("withdrawal_requests")
+}
+
+// ==================== SOCIAL & RATINGS ====================
+
+model Rating {
+  id         String   @id @default(uuid())
+  fromUserId String
+  toUserId   String
+  campaignId String?
+  stars      Int
+  comment    String?
+  createdAt  DateTime @default(now())
+
+  fromUser User @relation("RatingsGiven", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("RatingsReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId, campaignId])
+  @@map("ratings")
+}
+
+model Bookmark {
+  id           String   @id @default(uuid())
+  advertiserId String
+  reviewerId   String
+  createdAt    DateTime @default(now())
+
+  reviewer ReviewerProfile @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@unique([advertiserId, reviewerId])
+  @@map("bookmarks")
+}
+
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// ==================== CONTENT / BLOG ====================
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String
+  coverUrl    String?
+  category    String
+  author      String?
+  publishedAt DateTime?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}
+
+model TipsGuide {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  category  String
+  icon      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tips_guides")
+}

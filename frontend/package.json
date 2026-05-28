@@ -1,0 +1,47 @@
+{
+  "name": "topon-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.6.0",
+    "@tanstack/react-query": "^5.45.0",
+    "axios": "^1.7.2",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "framer-motion": "^11.2.12",
+    "lucide-react": "^0.395.0",
+    "next": "14.2.4",
+    "next-themes": "^0.3.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.52.0",
+    "react-hot-toast": "^2.4.1",
+    "react-image-crop": "^11.0.5",
+    "react-query": "^3.39.3",
+    "react-select": "^5.8.0",
+    "recharts": "^2.12.7",
+    "socket.io-client": "^4.8.3",
+    "swiper": "^11.1.4",
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5"
+  }
+}
