@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import api from '@/lib/api';
 import Image from 'next/image';
 import { format } from 'date-fns';
-
+import toast from 'react-hot-toast';
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'withdrawals' | 'blog'>('overview');
   const [blogModal, setBlogModal] = useState<{ isOpen: boolean; data?: any }>({ isOpen: false });
