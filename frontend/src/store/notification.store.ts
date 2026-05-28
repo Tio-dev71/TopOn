@@ -75,18 +75,18 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
 }));
 
 export const useNotifications = () => {
-  const { user, token } = useAuthStore();
+  const { user, accessToken } = useAuthStore();
   const store = useNotificationStore();
 
   useEffect(() => {
-    if (user && token) {
+    if (user && accessToken) {
       // Fetch initial notifications
       api.get('/notifications?limit=20').then(res => {
         store.setNotifications(res.data.data);
       }).catch(console.error);
 
       // Connect socket
-      store.connectSocket(token);
+      store.connectSocket(accessToken);
     } else {
       store.disconnectSocket();
     }
@@ -94,7 +94,7 @@ export const useNotifications = () => {
     return () => {
       // Don't disconnect on unmount, wait for logout
     };
-  }, [user?.id, token]);
+  }, [user?.id, accessToken]);
 
   return store;
 };
