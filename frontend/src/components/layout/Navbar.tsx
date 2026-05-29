@@ -1,14 +1,12 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-500 flex items-center justify-center">
-            <span className="text-white font-black">T</span>
-          </div>
-          <span className="font-black text-xl text-gray-900">topON</span>
+          <Image src="/topon.PNG" alt="TopOn Logo" width={140} height={40} className="h-9 w-auto object-contain" priority />
         </Link>
 
         <div className="flex items-center gap-4">
