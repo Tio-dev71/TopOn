@@ -10,10 +10,10 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">
+          <Link href="/auth/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">
             Đăng nhập
           </Link>
-          <Link href="/register" className="text-sm font-medium bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+          <Link href="/auth/register" className="text-sm font-medium bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
             Đăng ký
           </Link>
         </div>
