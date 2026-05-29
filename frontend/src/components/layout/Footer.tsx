@@ -53,7 +53,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/topon.PNG" alt="TopOn Logo" width={140} height={40} className="h-9 w-auto object-contain" />
+              <Image src="/topon.PNG" alt="TopOn Logo" width={240} height={80} className="h-9 w-auto object-contain" />
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               TopOn là nền tảng kết nối Influencer Marketing hàng đầu, giúp thương hiệu tiếp cận đúng đối tượng thông qua Reviewer, KOL & Creator.
