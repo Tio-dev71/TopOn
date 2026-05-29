@@ -3,7 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { Calendar, DollarSign, Users, MapPin, Share2, Heart, ExternalLink, Flag, ArrowRight, ShieldCheck, FileCheck } from 'lucide-react';
+import { Calendar, DollarSign, Users, MapPin, Share2, Heart, ExternalLink, Flag, ArrowRight, ShieldCheck, FileCheck, Search } from 'lucide-react';
+import Link from 'next/link';
 import api from '@/lib/api';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -66,162 +67,166 @@ export default function CampaignDetailPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gray-50/50 pt-8 pb-20">
-        <div className="max-w-5xl mx-auto px-6">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-            <a href="/campaigns" className="hover:text-blue-600 transition-colors">Chiến dịch</a>
-            <span>/</span>
-            <span className="text-gray-900 font-medium truncate">{campaign.title}</span>
-          </div>
-
-          {/* Cover Image */}
-          <div className="relative aspect-[21/9] rounded-3xl overflow-hidden mb-8 shadow-md">
-            {campaign.coverUrl ? (
-              <Image src={campaign.coverUrl} alt={campaign.title} fill className="object-cover" />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
-                <span className="text-6xl">📢</span>
+      <main className="min-h-screen bg-white pb-20">
+        {/* Sub-navbar */}
+        <div className="bg-white border-b border-gray-100 sticky top-0 z-20">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between py-4 gap-4">
+              <div className="flex items-center gap-6 text-[13px] font-bold text-gray-500 uppercase tracking-wide">
+                 <Link href="/" className="hover:text-gray-900 transition-colors flex items-center gap-2">
+                    <span className="w-4 h-4 flex flex-col justify-between">
+                       <span className="w-full h-0.5 bg-current"></span>
+                       <span className="w-full h-0.5 bg-current"></span>
+                       <span className="w-full h-0.5 bg-current"></span>
+                    </span>
+                    Tất cả danh mục
+                 </Link>
+                 <Link href="/campaigns" className="text-gray-900 border-b-2 border-gray-900 pb-1 -mb-[18px]">Dịch vụ</Link>
+                 <Link href="/products" className="hover:text-gray-900 transition-colors">Sản phẩm</Link>
+                 <Link href="/blog" className="hover:text-gray-900 transition-colors">Bài viết</Link>
               </div>
-            )}
+              <div className="hidden md:flex items-center gap-4 text-xs font-semibold text-gray-600">
+                 <Link href="/auth/login" className="hover:text-gray-900">Đăng nhập</Link>
+                 <Link href="/auth/register" className="hover:text-gray-900">Đăng ký</Link>
+                 <button className="hover:text-gray-900"><Search className="w-4 h-4" /></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             
-            <div className="absolute top-4 left-4 flex gap-2">
-              <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-gray-800 shadow-sm">
-                {campaign.type}
+            {/* Left Content (Title, Image, Details) */}
+            <div className="lg:col-span-8">
+              {/* Breadcrumb / Category */}
+              <div className="text-[11px] text-gray-500 mb-2 uppercase font-medium tracking-wide">Toàn quốc</div>
+              
+              {/* Title */}
+              <h1 className="text-2xl font-bold text-gray-900 mb-6 leading-snug">{campaign.title}</h1>
+              
+              {/* Image */}
+              <div className="w-full aspect-[3/4] md:aspect-[4/5] bg-gray-100 mb-12 relative">
+                {campaign.coverUrl ? (
+                  <Image src={campaign.coverUrl} alt={campaign.title} fill className="object-cover" />
+                ) : (
+                  <div className="absolute inset-0 bg-gray-50 flex items-center justify-center">
+                    <span className="text-4xl text-gray-300">🖼️</span>
+                  </div>
+                )}
               </div>
-              {campaign.isFeatured && (
-                <div className="bg-gradient-to-r from-blue-500 to-blue-500 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm flex items-center gap-1">
-                  🔥 NỔI BẬT
-                </div>
-              )}
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm mb-8">
-                <h1 className="text-3xl font-black text-gray-900 leading-tight mb-4">{campaign.title}</h1>
+              {/* Details List */}
+              <div className="space-y-12">
                 
-                {/* Categories */}
-                {campaign.categories?.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {campaign.categories.map((cat: string) => (
-                      <span key={cat} className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-sm font-medium border border-gray-100">
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Requirements Grid */}
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <FileCheck className="w-5 h-5 text-blue-500" />
-                  Yêu cầu công việc
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div className="text-xs text-gray-500 font-medium mb-1">Nền tảng yêu cầu</div>
-                    <div className="flex gap-1.5 flex-wrap">
-                      {campaign.platforms?.map((p: string) => (
-                        <span key={p} className={`text-xs font-bold px-2 py-1 rounded-md ${PLATFORM_COLORS[p] || 'bg-gray-200'}`}>
-                          {PLATFORM_LABELS[p] || p}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div className="text-xs text-gray-500 font-medium mb-1">Mục tiêu chiến dịch</div>
-                    <div className="text-sm font-semibold text-gray-900">{campaign.objectives || 'Không có'}</div>
-                  </div>
+                {/* Phần thưởng */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-gray-100 pt-6">
+                   <div className="font-bold text-gray-900 text-sm">Phần thưởng</div>
+                   <div className="md:col-span-3 text-sm text-gray-600 space-y-4">
+                     <p className="font-bold text-red-500">{campaign.budgetPerReviewer?.toLocaleString('vi-VN')}đ / Reviewer</p>
+                     <div className="whitespace-pre-line leading-relaxed">
+                        {campaign.description}
+                     </div>
+                   </div>
                 </div>
 
-                {/* Description */}
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Chi tiết chiến dịch</h3>
-                <div className="prose prose-sm sm:prose-base text-gray-600 max-w-none">
-                  {campaign.description.split('\n').map((line: string, i: number) => (
-                    <p key={i} className="mb-2">{line}</p>
-                  ))}
+                {/* Tiêu chuẩn */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-gray-100 pt-6">
+                   <div className="font-bold text-gray-900 text-sm">Tiêu chuẩn reviewer</div>
+                   <div className="md:col-span-3 text-sm text-gray-600 space-y-2">
+                     <p>Nữ / Nam</p>
+                     <p>Khu vực: Toàn quốc</p>
+                     <p>Nền tảng: {campaign.platforms?.join(', ')}</p>
+                   </div>
                 </div>
 
-                {campaign.contentRequirements && (
-                  <>
-                    <h3 className="text-lg font-bold text-gray-900 mt-8 mb-4">Yêu cầu nội dung (Do & Don'ts)</h3>
-                    <div className="prose prose-sm sm:prose-base text-gray-600 max-w-none bg-yellow-50 p-6 rounded-2xl border border-yellow-100">
-                      {campaign.contentRequirements.split('\n').map((line: string, i: number) => (
-                        <p key={i} className="mb-2">{line}</p>
-                      ))}
-                    </div>
-                  </>
-                )}
+                {/* Yêu cầu nội dung */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-gray-100 pt-6">
+                   <div className="font-bold text-gray-900 text-sm">Yêu cầu nội dung</div>
+                   <div className="md:col-span-3 text-sm text-gray-600 whitespace-pre-line leading-relaxed">
+                     {campaign.contentRequirements || 'Chưa có yêu cầu chi tiết.'}
+                   </div>
+                </div>
+                
+                {/* Tham Gia Chiến Dịch */}
+                <div className="border-t border-gray-100 pt-12 pb-12">
+                   <h2 className="text-xl font-bold text-gray-900 mb-2">Tham Gia Chiến Dịch</h2>
+                   <p className="text-xs text-gray-500 mb-8">
+                     Vui lòng xác nhận và điền các thông tin bổ sung để đăng ký chiến dịch này.
+                   </p>
+                   <form className="space-y-6 max-w-xl">
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                         <label className="text-sm font-bold text-gray-900">Thông tin cá nhân *</label>
+                         <div className="md:col-span-3">
+                            <input type="text" placeholder="Họ và tên" className="w-full text-sm px-4 py-2 border border-gray-200 focus:outline-none" />
+                         </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                         <label className="text-sm font-bold text-gray-900">Số điện thoại *</label>
+                         <div className="md:col-span-3">
+                            <input type="tel" placeholder="+84" className="w-full text-sm px-4 py-2 border border-gray-200 focus:outline-none" />
+                         </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                         <label className="text-sm font-bold text-gray-900 pt-2">Điều khoản *</label>
+                         <div className="md:col-span-3 bg-gray-50 p-4 border border-gray-100 text-xs text-gray-600 space-y-3 h-48 overflow-y-auto">
+                            <p className="font-bold text-blue-600">Vui lòng đọc cẩn thận trước khi bạn nộp đơn.</p>
+                            <p>Không thể xóa bỏ bài viết trong thời gian yêu cầu (thường là 30 ngày sau khi chiến dịch kết thúc).</p>
+                            <p>Nếu bạn không thực hiện nội dung sau khi nhận sản phẩm, bạn có thể bị phạt.</p>
+                            <p>Nội dung hình ảnh có thể được sử dụng làm tư liệu truyền thông bởi nhãn hàng.</p>
+                            <label className="flex items-center gap-2 mt-4 font-bold text-gray-900">
+                               <input type="checkbox" className="w-4 h-4 accent-black" /> Tôi đồng ý với các điều khoản
+                            </label>
+                         </div>
+                      </div>
+                   </form>
+                </div>
               </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="lg:col-span-1 space-y-6">
-              {/* Action Card */}
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-card sticky top-24">
-                <div className="text-center mb-6">
-                  <div className="text-sm text-gray-500 font-medium mb-1">Ngân sách cho mỗi Reviewer</div>
-                  <div className="text-3xl font-black text-blue-600">
-                    {campaign.budgetPerReviewer?.toLocaleString('vi-VN')}đ
-                  </div>
-                </div>
+            {/* Right Sticky Sidebar */}
+            <div className="lg:col-span-4 relative">
+               <div className="sticky top-32">
+                 <div className="bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] text-sm">
+                   <div className="space-y-4 mb-8 text-xs">
+                     <div className="flex justify-between items-center text-gray-600">
+                       <span>Đăng tuyển</span>
+                       <span className="font-semibold text-gray-900">
+                         {campaign.deadline ? format(new Date(campaign.deadline), 'dd/MM') : 'Không có'}
+                       </span>
+                     </div>
+                     <div className="flex justify-between items-center text-gray-600">
+                       <span>Chọn lọc</span>
+                       <span className="font-semibold text-gray-900">Sau khi hết hạn</span>
+                     </div>
+                     <div className="flex justify-between items-center text-gray-600">
+                       <span>Đăng bài</span>
+                       <span className="font-semibold text-gray-900">Trong vòng 7 ngày</span>
+                     </div>
+                   </div>
 
-                <div className="space-y-4 text-sm mb-6">
-                  <div className="flex items-center justify-between pb-3 border-b border-gray-50">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Users className="w-4 h-4" /> Số lượng cần
-                    </div>
-                    <div className="font-semibold text-gray-900">{campaign.maxReviewers} người</div>
-                  </div>
-                  <div className="flex items-center justify-between pb-3 border-b border-gray-50">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Calendar className="w-4 h-4" /> Hạn đăng ký
-                    </div>
-                    <div className="font-semibold text-gray-900">
-                      {campaign.deadline ? format(new Date(campaign.deadline), 'dd/MM/yyyy') : 'Không có'}
-                    </div>
-                  </div>
-                </div>
+                   <div className="space-y-4 mb-8 text-gray-600 font-medium">
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <span>Phần thưởng</span>
+                        <span className="text-red-500 font-bold">{campaign.budgetPerReviewer?.toLocaleString('vi-VN')}đ</span>
+                      </div>
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <span>Điều kiện và Điều khoản</span>
+                      </div>
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <span>Hướng dẫn chiến dịch</span>
+                      </div>
+                      <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <span>Yêu cầu nội dung</span>
+                      </div>
+                   </div>
 
-                <button className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-blue-500 text-white font-bold rounded-2xl hover:opacity-90 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                  Đăng ký tham gia <ArrowRight className="w-4 h-4" />
-                </button>
-
-                <div className="mt-4 flex justify-center gap-4">
-                  <button className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">
-                    <Heart className="w-4 h-4" /> Lưu lại
-                  </button>
-                  <button className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">
-                    <Share2 className="w-4 h-4" /> Chia sẻ
-                  </button>
-                </div>
-              </div>
-
-              {/* Brand Info */}
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4">Thông tin thương hiệu</h3>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
-                    {campaign.advertiser?.logoUrl ? (
-                      <Image src={campaign.advertiser.logoUrl} alt="Logo" width={48} height={48} />
-                    ) : (
-                      <div className="text-xl font-bold text-gray-400">{companyName[0]}</div>
-                    )}
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900">{companyName}</div>
-                    <div className="text-xs text-gray-500">{campaign.advertiser?.industry || 'Chưa cập nhật'}</div>
-                  </div>
-                </div>
-                {campaign.advertiser?.website && (
-                  <a href={campaign.advertiser.website} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 w-full py-2 bg-gray-50 text-sm font-semibold text-gray-700 rounded-xl hover:bg-gray-100 transition-colors">
-                    Truy cập website <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </div>
+                   <button className="w-full bg-gray-900 text-white font-bold py-3 hover:bg-black transition-colors">
+                     Đăng nhập
+                   </button>
+                 </div>
+               </div>
             </div>
+
           </div>
         </div>
       </main>

@@ -2,16 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Save, User, Instagram, Youtube, Facebook, MapPin, Phone, CheckCircle, Upload } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import api from '@/lib/api';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 
-const CATEGORIES = ['Làm đẹp', 'Du lịch', 'Ẩm thực', 'Lifestyle', 'Công nghệ', 'Thời trang', 'Nhà bếp', 'Giải trí'];
-
 export default function ReviewerProfilePage() {
+  const [activeTab, setActiveTab] = useState('basic');
+
   const { data: profile, isLoading, refetch } = useQuery({
     queryKey: ['my-profile'],
     queryFn: async () => {
@@ -22,239 +18,273 @@ export default function ReviewerProfilePage() {
 
   const [formData, setFormData] = useState({
     fullName: '',
-    bio: '',
+    username: '',
     phone: '',
     address: '',
-    igHandle: '',
-    tiktokHandle: '',
-    ytHandle: '',
-    fbHandle: '',
-    followersIg: 0,
-    followersTiktok: 0,
-    followersYt: 0,
-    engagementRate: 0,
-    specialties: [] as string[],
+    gender: 'Nam',
+    dobDay: '',
+    dobMonth: '',
+    dobYear: '',
+    city: '',
+    district: '',
+    addressDetail: '',
   });
 
   useEffect(() => {
     if (profile) {
-      setFormData({
+      setFormData(prev => ({
+        ...prev,
         fullName: profile.fullName || '',
-        bio: profile.bio || '',
+        username: profile.username || '',
         phone: profile.phone || '',
         address: profile.address || '',
-        igHandle: profile.reviewerProfile?.igHandle || '',
-        tiktokHandle: profile.reviewerProfile?.tiktokHandle || '',
-        ytHandle: profile.reviewerProfile?.ytHandle || '',
-        fbHandle: profile.reviewerProfile?.fbHandle || '',
-        followersIg: profile.reviewerProfile?.followersIg || 0,
-        followersTiktok: profile.reviewerProfile?.followersTiktok || 0,
-        followersYt: profile.reviewerProfile?.followersYt || 0,
-        engagementRate: profile.reviewerProfile?.engagementRate || 0,
-        specialties: profile.reviewerProfile?.specialties || [],
-      });
+      }));
     }
   }, [profile]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'number' ? Number(value) : value
-    }));
-  };
-
-  const toggleSpecialty = (spec: string) => {
-    setFormData(prev => ({
-      ...prev,
-      specialties: prev.specialties.includes(spec)
-        ? prev.specialties.filter(s => s !== spec)
-        : [...prev.specialties, spec]
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // 1. Update basic profile
       await api.put('/profile/me', {
         fullName: formData.fullName,
-        bio: formData.bio,
         phone: formData.phone,
         address: formData.address,
       });
-
-      // 2. Update reviewer specific data
-      await api.put('/profile/reviewer/social', {
-        igHandle: formData.igHandle,
-        tiktokHandle: formData.tiktokHandle,
-        ytHandle: formData.ytHandle,
-        fbHandle: formData.fbHandle,
-        followersIg: formData.followersIg,
-        followersTiktok: formData.followersTiktok,
-        followersYt: formData.followersYt,
-        engagementRate: formData.engagementRate,
-        specialties: formData.specialties,
-      });
-
-      toast.success('Cập nhật hồ sơ thành công!');
+      toast.success('Lưu thành công!');
       refetch();
     } catch (err) {
-      toast.error('Lỗi khi cập nhật hồ sơ');
+      toast.error('Có lỗi xảy ra');
     }
   };
 
-  if (isLoading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Đang tải...</div>;
+  if (isLoading) return <div className="py-20 text-center">Đang tải...</div>;
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gray-50/50 pb-20">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-100 pt-8 pb-8">
-          <div className="max-w-4xl mx-auto px-6">
-            <h1 className="text-3xl font-black text-gray-900 mb-2">Hồ sơ cá nhân</h1>
-            <p className="text-gray-500 text-sm">Quản lý thông tin và số liệu mạng xã hội của bạn để thu hút nhiều nhãn hàng hơn.</p>
-          </div>
-        </div>
+    <div className="w-full">
+      <h2 className="text-[15px] font-bold text-gray-900 border-b border-gray-900 pb-2 mb-6">
+        Thông tin
+      </h2>
 
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            
-            {/* 1. Basic Info */}
-            <div className="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-500" /> Thông tin cơ bản
-              </h2>
-              
-              <div className="flex gap-8 mb-8">
-                <div className="w-24 h-24 rounded-full bg-gray-100 border-2 border-gray-200 relative overflow-hidden flex-shrink-0 group">
-                  {profile?.avatarUrl ? (
-                    <Image src={profile.avatarUrl} alt="" fill className="object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-3xl font-black text-gray-400">
-                      {formData.fullName?.[0] || 'R'}
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all">
-                    <Upload className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-                <div className="flex-1 space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Họ và tên</label>
-                    <input name="fullName" value={formData.fullName} onChange={handleChange} className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Giới thiệu ngắn (Bio)</label>
-                    <textarea name="bio" value={formData.bio} onChange={handleChange} rows={3} className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" placeholder="Hãy viết gì đó về bạn..." />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1"><Phone className="w-4 h-4"/> Số điện thoại</label>
-                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1"><MapPin className="w-4 h-4"/> Địa chỉ</label>
-                  <input name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400" />
-                </div>
-              </div>
-            </div>
-
-            {/* 2. Lĩnh vực */}
-            <div className="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Lĩnh vực hoạt động (Specialties)</h2>
-              <div className="flex flex-wrap gap-2">
-                {CATEGORIES.map(cat => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => toggleSpecialty(cat)}
-                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors border ${
-                      formData.specialties.includes(cat) 
-                        ? 'bg-blue-50 border-blue-200 text-blue-600' 
-                        : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* 3. Social Stats */}
-            <div className="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-900 mb-2">Số liệu mạng xã hội (Nhập tay)</h2>
-              <p className="text-gray-500 text-sm mb-6">Hãy cập nhật số liệu chính xác để được các thương hiệu chú ý tới.</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* TIKTOK */}
-                <div className="p-5 border border-gray-100 bg-gray-50 rounded-2xl">
-                  <div className="font-bold mb-4 flex items-center gap-2">🎵 TikTok</div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Handle (@username)</label>
-                      <input name="tiktokHandle" value={formData.tiktokHandle} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" placeholder="@" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Followers</label>
-                      <input name="followersTiktok" type="number" min="0" value={formData.followersTiktok} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* IG */}
-                <div className="p-5 border border-gray-100 bg-gray-50 rounded-2xl">
-                  <div className="font-bold mb-4 flex items-center gap-2 text-pink-600"><Instagram className="w-4 h-4" /> Instagram</div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Handle (@username)</label>
-                      <input name="igHandle" value={formData.igHandle} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" placeholder="@" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Followers</label>
-                      <input name="followersIg" type="number" min="0" value={formData.followersIg} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Youtube & FB */}
-                <div className="space-y-4">
-                   <div className="font-bold flex items-center gap-2 text-blue-600"><Youtube className="w-4 h-4"/> YouTube</div>
-                   <input name="ytHandle" value={formData.ytHandle} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" placeholder="Channel Link or Handle" />
-                   <input name="followersYt" type="number" min="0" value={formData.followersYt} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" placeholder="Subscribers" />
-                </div>
-
-                <div className="space-y-4">
-                   <div className="font-bold flex items-center gap-2 text-blue-600"><Facebook className="w-4 h-4"/> Facebook</div>
-                   <input name="fbHandle" value={formData.fbHandle} onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-400" placeholder="Profile/Page Link" />
-                </div>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <div className="max-w-xs">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Tỷ lệ tương tác chung (Engagement Rate %)</label>
-                  <input name="engagementRate" type="number" step="0.1" min="0" max="100" value={formData.engagementRate} onChange={handleChange} className="w-full px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-blue-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-4">
-              <button type="button" className="px-6 py-3 font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50">
-                Hủy
-              </button>
-              <button type="submit" className="flex items-center gap-2 px-8 py-3 font-bold text-white bg-gradient-to-r from-blue-500 to-blue-500 rounded-xl hover:opacity-90 transition-opacity shadow-sm">
-                <Save className="w-5 h-5" />
-                Lưu Thay Đổi
-              </button>
-            </div>
-          </form>
-        </div>
+      {/* Tabs */}
+      <div className="flex text-[11px] font-bold text-gray-400 mb-8 overflow-x-auto whitespace-nowrap">
+        <button 
+          onClick={() => setActiveTab('basic')}
+          className={`flex-1 text-center py-2 border-b-2 ${activeTab === 'basic' ? 'border-[#3f51b5] text-[#3f51b5]' : 'border-gray-100 hover:text-gray-600'}`}
+        >
+          Thông tin cơ bản<br/><span className="text-[9px] font-normal text-gray-400">Thiết lập mạng xã hội và thêm thông tin cá nhân</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab('additional')}
+          className={`flex-1 text-center py-2 border-b-2 ${activeTab === 'additional' ? 'border-[#3f51b5] text-[#3f51b5]' : 'border-gray-100 hover:text-gray-600'}`}
+        >
+          Thông tin bổ sung<br/><span className="text-[9px] font-normal text-gray-400">Bạn sẽ nhận được số mình có nếu nộp thêm thông tin bổ sung</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab('password')}
+          className={`flex-1 text-center py-2 border-b-2 ${activeTab === 'password' ? 'border-[#3f51b5] text-[#3f51b5]' : 'border-gray-100 hover:text-gray-600'}`}
+        >
+          Thay đổi Mật khẩu<br/><span className="text-[9px] font-normal text-gray-400">Khuyên đổi thường xuyên 6 tháng/1 lần để tăng bảo mật.</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab('social')}
+          className={`flex-1 text-center py-2 border-b-2 ${activeTab === 'social' ? 'border-[#3f51b5] text-[#3f51b5]' : 'border-gray-100 hover:text-gray-600'}`}
+        >
+          Đăng nhập bằng Mạng xã hội<br/><span className="text-[9px] font-normal text-gray-400">Thêm vào tài khoản có thể kết nối với mạng xã hội.</span>
+        </button>
       </div>
-      <Footer />
-    </>
+
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {activeTab === 'basic' && (
+          <>
+            <div>
+              <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+                Thông tin của tôi
+              </h3>
+              <div className="space-y-4 text-[11px]">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Địa chỉ email *</label>
+                  <input type="email" disabled value={profile?.email || ''} className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none bg-gray-50 text-gray-500" />
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Biệt danh *</label>
+                  <input name="username" value={formData.username} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none" />
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Giới tính *</label>
+                  <div className="flex-1 flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer"><input type="radio" name="gender" value="Nam" checked={formData.gender === 'Nam'} onChange={handleChange} className="accent-[#3f51b5]" /> Nam</label>
+                    <label className="flex items-center gap-2 cursor-pointer"><input type="radio" name="gender" value="Nữ" checked={formData.gender === 'Nữ'} onChange={handleChange} className="accent-[#3f51b5]" /> Nữ</label>
+                    <label className="flex items-center gap-2 cursor-pointer"><input type="radio" name="gender" value="Khác" checked={formData.gender === 'Khác'} onChange={handleChange} className="accent-[#3f51b5]" /> Khác</label>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Tên *</label>
+                  <input name="fullName" value={formData.fullName} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none" />
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Số điện thoại *</label>
+                  <div className="flex-1 flex gap-2">
+                    <select className="px-3 py-2 border border-gray-200 focus:outline-none w-28 bg-white"><option>Vietnam +84</option></select>
+                    <input name="phone" value={formData.phone} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none" />
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Ngày sinh *</label>
+                  <div className="flex-1 grid grid-cols-3 gap-2">
+                    <select name="dobDay" onChange={handleChange} className="px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn Ngày</option></select>
+                    <select name="dobMonth" onChange={handleChange} className="px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn Tháng</option></select>
+                    <select name="dobYear" onChange={handleChange} className="px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn Năm</option></select>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0 pt-2">Địa chỉ *</label>
+                  <div className="flex-1 space-y-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <select name="city" onChange={handleChange} className="px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn Thành phố</option></select>
+                      <select name="district" onChange={handleChange} className="px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn Quận huyện</option></select>
+                    </div>
+                    <input name="addressDetail" placeholder="Địa chỉ chi tiết" onChange={handleChange} className="w-full px-3 py-2 border border-gray-200 focus:outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+                Đăng ký
+              </h3>
+              <div className="space-y-2 text-[11px] text-gray-600">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="accent-[#3f51b5]" checked readOnly /> Tôi muốn nhận bản tin. <span className="text-gray-400">(Thông báo chiến dịch được gửi tự động.)</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="accent-[#3f51b5]" /> Tôi muốn nhận thông tin qua SMS.
+                </label>
+              </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'additional' && (
+          <>
+            <div>
+              <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+                Tài khoản
+              </h3>
+              <div className="space-y-4 text-[11px]">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Tài khoản Ngân hàng *</label>
+                  <div className="flex-1 space-y-2">
+                    <select className="w-full px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn ngân hàng</option></select>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input placeholder="Số tài khoản" className="px-3 py-2 border border-gray-200 focus:outline-none" />
+                      <input placeholder="Tên chủ tài khoản" className="px-3 py-2 border border-gray-200 focus:outline-none" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+                Thông tin của tôi
+              </h3>
+              <div className="space-y-4 text-[11px]">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Nghề nghiệp</label>
+                  <select className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Chọn nghề nghiệp</option></select>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0">Ngôn ngữ *</label>
+                  <select className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none bg-white"><option value="">Tìm kiếm và thêm Ngôn ngữ</option></select>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0 pt-2">Mối quan tâm</label>
+                  <div className="flex-1 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 text-center text-gray-500">
+                    <div><div className="w-8 h-8 mx-auto bg-gray-50 border border-gray-200 rounded flex items-center justify-center mb-1 text-[10px]">🏠</div>Nhà Hàng</div>
+                    <div><div className="w-8 h-8 mx-auto bg-gray-50 border border-gray-200 rounded flex items-center justify-center mb-1 text-[10px]">✈️</div>Du Lịch</div>
+                    <div><div className="w-8 h-8 mx-auto bg-gray-50 border border-gray-200 rounded flex items-center justify-center mb-1 text-[10px]">💄</div>Mỹ Phẩm</div>
+                    <div><div className="w-8 h-8 mx-auto bg-gray-50 border border-gray-200 rounded flex items-center justify-center mb-1 text-[10px]">👗</div>Thời Trang</div>
+                    {/* Placeholder icons */}
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4">
+                  <label className="md:w-32 font-bold text-gray-900 shrink-0 pt-2">Thông tin cá nhân</label>
+                  <textarea className="flex-1 px-3 py-2 border border-gray-200 focus:outline-none" rows={4} placeholder="Viết về những thế mạnh của bạn..." />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'password' && (
+          <div>
+            <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+              Thay đổi Mật khẩu
+            </h3>
+            <div className="space-y-4 text-[11px] max-w-xl">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                <label className="md:w-32 font-bold text-gray-900 shrink-0">Mật khẩu hiện tại *</label>
+                <div className="flex-1 relative">
+                  <input type="password" placeholder="Nhập mật khẩu của bạn" className="w-full px-3 py-2 border border-gray-200 focus:outline-none" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">👁️</span>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                <label className="md:w-32 font-bold text-gray-900 shrink-0">Mật khẩu mới *</label>
+                <div className="flex-1 relative">
+                  <input type="password" placeholder="Nhập mật khẩu của bạn" className="w-full px-3 py-2 border border-gray-200 focus:outline-none" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">👁️</span>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                <label className="md:w-32 font-bold text-gray-900 shrink-0">Xác nhận mật khẩu *</label>
+                <div className="flex-1 relative">
+                  <input type="password" placeholder="Nhập mật khẩu của bạn" className="w-full px-3 py-2 border border-gray-200 focus:outline-none" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">👁️</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'social' && (
+          <div>
+            <h3 className="text-xs font-bold text-gray-900 border-b border-gray-100 pb-2 mb-6">
+              Đăng nhập bằng Mạng xã hội
+            </h3>
+            <div className="space-y-4 max-w-2xl">
+              <div className="flex items-center justify-between border border-gray-100 p-4 rounded-lg bg-white">
+                <div className="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                  <span className="text-[#1877f2] text-xl">🔵</span> Kết nối Facebook
+                </div>
+                <div className="w-10 h-5 bg-gray-200 rounded-full relative cursor-pointer">
+                  <div className="w-4 h-4 bg-white rounded-full absolute left-0.5 top-0.5 shadow-sm"></div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between border border-gray-100 p-4 rounded-lg bg-white">
+                <div className="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                  <span className="text-black text-xl"></span> Kết nối Apple ID
+                </div>
+                <div className="w-10 h-5 bg-gray-200 rounded-full relative cursor-pointer">
+                  <div className="w-4 h-4 bg-white rounded-full absolute left-0.5 top-0.5 shadow-sm"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex justify-center md:justify-end border-t border-gray-100 pt-6">
+          <button type="submit" className="px-10 py-2 bg-[#d1d5db] text-white font-bold text-xs rounded hover:bg-gray-400 transition-colors">
+            {activeTab === 'password' ? 'Lưu mật khẩu mới' : 'Lưu thay đổi'}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

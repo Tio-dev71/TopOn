@@ -5,9 +5,8 @@ import HeroSection from '@/components/home/HeroSection';
 import CategoryBar from '@/components/home/CategoryBar';
 import FeaturedCampaigns from '@/components/home/FeaturedCampaigns';
 import HotCampaigns from '@/components/home/HotCampaigns';
-import WhyTopOn from '@/components/home/WhyTopOn';
-import HowItWorks from '@/components/home/HowItWorks';
 import BlogPreview from '@/components/home/BlogPreview';
+import BestReviews from '@/components/home/BestReviews';
 
 export default function HomePage() {
   return (
@@ -18,9 +17,8 @@ export default function HomePage() {
         <CategoryBar />
         <FeaturedCampaigns />
         <HotCampaigns />
-        <WhyTopOn />
-        <HowItWorks />
         <BlogPreview />
+        <BestReviews />
       </main>
       <Footer />
     </>

@@ -17,19 +17,15 @@ export default function FeaturedCampaigns() {
 
   return (
     <section className="py-14 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-black text-gray-900">Chiến dịch mới</h2>
-            <p className="text-sm text-gray-400 mt-1">Những chiến dịch mới nhất đang tuyển reviewer</p>
-          </div>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-[22px] font-bold text-gray-900">Chiến dịch mới</h2>
           <Link
             href="/campaigns"
-            className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1 text-[13px] text-gray-400 hover:text-gray-900 transition-colors"
           >
-            Xem tất cả
-            <ArrowRight className="w-4 h-4" />
+            Xem thêm <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 

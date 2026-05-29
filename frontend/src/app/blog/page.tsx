@@ -23,71 +23,60 @@ export default function BlogListPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-gray-50/50 pb-20">
-        <div className="bg-white border-b border-gray-100 pt-12 pb-16">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <div className="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              Tin tức & Kiến thức
+        <div className="bg-white pt-8 pb-4">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Tất cả bài viết</h1>
+            <div className="relative max-w-xs w-full">
+              <input type="text" placeholder="Tìm kiếm bài viết..." className="w-full pl-4 pr-10 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
             </div>
-            <h1 className="text-4xl font-black text-gray-900 mb-4">TopOn Blog</h1>
-            <p className="text-gray-500 text-base max-w-2xl mx-auto">
-              Cập nhật những xu hướng Influencer Marketing mới nhất, case study thành công và cẩm nang dành cho cả Brands lẫn Creators.
-            </p>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="h-96 bg-white rounded-3xl animate-pulse" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+                <div key={i} className="h-64 bg-gray-200 rounded-xl animate-pulse" />
               ))}
             </div>
           ) : data?.data?.length === 0 ? (
             <div className="text-center py-20 text-gray-500">Chưa có bài viết nào.</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {data?.data?.map((post: any) => (
-                <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all block">
-                  <div className="aspect-[16/10] relative overflow-hidden bg-gray-100">
-                    {post.coverUrl ? (
-                      <Image 
-                        src={post.coverUrl} 
-                        alt={post.title} 
-                        fill 
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200" />
-                    )}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-gray-900 text-xs font-bold rounded-lg shadow-sm">
-                        {post.category}
-                      </span>
+                <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
+                  <div className="bg-white rounded-xl overflow-hidden mb-3 border border-gray-100 relative shadow-sm">
+                    <div className="aspect-[4/3] relative overflow-hidden bg-gray-100">
+                      {post.coverUrl ? (
+                        <Image 
+                          src={post.coverUrl} 
+                          alt={post.title} 
+                          fill 
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-50" />
+                      )}
+                      {post.category && (
+                        <div className="absolute top-0 left-0 bg-[#3f51b5] text-white text-[10px] font-semibold px-3 py-1 rounded-br-lg">
+                          {post.category}
+                        </div>
+                      )}
                     </div>
                   </div>
                   
-                  <div className="p-6">
-                    <div className="flex items-center gap-4 text-xs font-semibold text-gray-400 mb-3">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {post.publishedAt ? format(new Date(post.publishedAt), 'dd MMMM, yyyy', { locale: vi }) : ''}
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5" />
-                        {post.author || 'TopOn'}
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                  <div>
+                    <h3 className="text-[13px] font-bold text-gray-900 mb-1.5 group-hover:text-[#3f51b5] transition-colors line-clamp-2 leading-snug">
                       {post.title}
                     </h3>
                     
-                    <p className="text-gray-500 text-sm line-clamp-2 mb-6">
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center text-blue-600 text-sm font-bold group-hover:translate-x-1 transition-transform">
-                      Đọc tiếp <ChevronRight className="w-4 h-4 ml-1" />
+                    <div className="flex items-center text-[10px] text-gray-500">
+                      <span>
+                        Ngày {post.publishedAt ? format(new Date(post.publishedAt), 'dd/MM/yyyy', { locale: vi }) : '...'} tác giả {post.author || 'TopOn'}
+                      </span>
                     </div>
                   </div>
                 </Link>

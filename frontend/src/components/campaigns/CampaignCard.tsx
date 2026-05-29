@@ -47,14 +47,14 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default function CampaignCard({ campaign, featured = false }: { campaign: Campaign; featured?: boolean }) {
-  const advertiserName = campaign.advertiser?.companyName ||
-    campaign.advertiser?.user?.profile?.fullName || 'Thương hiệu';
+  // Try to determine a status/type text like "Tuyển chọn", "Đăng bài" based on type
+  const typeText = campaign.type === 'REVIEW' ? 'Đăng bài' : campaign.type === 'CHECKIN' ? 'Check-in' : 'Tuyển chọn';
 
   return (
-    <Link href={`/campaigns/${campaign.id}`} className="block group">
-      <div className={`bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-0.5 ${featured ? 'ring-2 ring-blue-100' : ''}`}>
+    <Link href={`/campaigns/${campaign.id}`} className="block group w-full">
+      <div className="flex flex-col w-full">
         {/* Image */}
-        <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
+        <div className="relative aspect-square bg-gray-100 mb-2 overflow-hidden rounded-md">
           {campaign.coverUrl ? (
             <Image
               src={campaign.coverUrl}
@@ -64,83 +64,48 @@ export default function CampaignCard({ campaign, featured = false }: { campaign:
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-50">
-              <span className="text-4xl">📦</span>
+              <span className="text-3xl opacity-50">📦</span>
             </div>
           )}
 
-          {/* Featured badge */}
-          {campaign.isFeatured && (
-            <div className="absolute top-3 left-3 bg-gradient-to-r from-blue-500 to-blue-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-              🔥 NỔI BẬT
-            </div>
-          )}
-
-          {/* Type badge */}
-          <div className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm ${TYPE_COLORS[campaign.type] || 'bg-gray-100 text-gray-700'}`}>
-            {TYPE_LABELS[campaign.type] || campaign.type}
+          {/* Top-left platform icons */}
+          <div className="absolute top-1 left-1 flex gap-1 z-10">
+            {campaign.platforms?.map((p) => (
+              <span key={p} className="text-[10px] bg-white/90 rounded-sm w-4 h-4 flex items-center justify-center shadow-sm" title={p}>
+                {PLATFORM_ICONS[p] || '📱'}
+              </span>
+            ))}
           </div>
 
-          {/* Platforms */}
-          <div className="absolute bottom-3 left-3 flex gap-1">
-            {campaign.platforms?.map((p) => (
-              <span key={p} className="text-sm" title={p}>{PLATFORM_ICONS[p] || p}</span>
-            ))}
+          {/* Bottom-left Badge */}
+          <div className="absolute bottom-0 left-0 bg-[#3f51b5] text-white text-[9px] font-bold px-1.5 py-0.5 flex items-center gap-1 rounded-tr-md">
+             <span className="text-[8px]">🎯</span> {typeText}
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          {/* Advertiser */}
-          <div className="flex items-center gap-2 mb-2.5">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-              {advertiserName[0]}
-            </div>
-            <span className="text-xs text-gray-500 truncate">{advertiserName}</span>
-          </div>
-
+        <div className="flex flex-col">
           {/* Title */}
-          <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+          <h3 className="font-semibold text-gray-900 text-[11px] md:text-xs leading-tight mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {campaign.title}
           </h3>
 
-          {/* Budget */}
-          <div className="flex items-center gap-1.5 mb-3">
-            <DollarSign className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-bold text-blue-600">
-              {campaign.budgetPerReviewer?.toLocaleString('vi-VN')}đ
-            </span>
-            <span className="text-xs text-gray-400">/ reviewer</span>
+          {/* Location */}
+          <div className="text-[9px] text-gray-400 mb-1">
+             Toàn quốc
           </div>
 
-          {/* Meta */}
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            {campaign.deadline && (
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Hạn: {format(new Date(campaign.deadline), 'dd/MM', { locale: vi })}</span>
-              </div>
-            )}
-            {campaign._count && (
-              <div className="flex items-center gap-1">
-                <Users className="w-3.5 h-3.5" />
-                <span>{campaign._count.applications} đã đăng ký</span>
-              </div>
-            )}
+          {/* Applicants */}
+          <div className="text-[9px] text-gray-500 mb-1.5">
+             Đã ứng tuyển {campaign._count?.applications || 0} / {campaign.maxReviewers || 50}
           </div>
 
-          {/* Tags */}
-          {campaign.categories?.length > 0 && (
-            <div className="flex gap-1.5 flex-wrap mt-3 pt-3 border-t border-gray-50">
-              {campaign.categories.slice(0, 3).map((cat) => (
-                <span
-                  key={cat}
-                  className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                >
-                  {cat}
-                </span>
-              ))}
-            </div>
-          )}
+          {/* Points/Price */}
+          <div className="flex items-center">
+             <span className="text-[10px] font-semibold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
+                {campaign.budgetPerReviewer ? `${campaign.budgetPerReviewer.toLocaleString('vi-VN')}P` : '0P'}
+             </span>
+          </div>
         </div>
       </div>
     </Link>

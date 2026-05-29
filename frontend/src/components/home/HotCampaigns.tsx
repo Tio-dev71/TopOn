@@ -77,29 +77,21 @@ export default function HotCampaigns() {
 
   return (
     <section className="py-14 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-500 flex items-center justify-center">
-              <Flame className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-black text-gray-900">Chiến dịch nổi bật</h2>
-              <p className="text-sm text-gray-400">Đang hot & cần reviewer gấp</p>
-            </div>
-          </div>
-          <Link href="/campaigns?featured=true" className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700">
-            Xem tất cả <ArrowRight className="w-4 h-4" />
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-[22px] font-bold text-gray-900">Chiến dịch nổi bật</h2>
+          <Link href="/campaigns?featured=true" className="flex items-center gap-1 text-[13px] text-gray-400 hover:text-gray-900">
+            Xem thêm <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[...Array(3)].map((_, i) => <div key={i} className="h-64 bg-gray-100 rounded-2xl animate-pulse" />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[...Array(4)].map((_, i) => <div key={i} className="h-64 bg-gray-200 rounded-lg animate-pulse" />)}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {data?.map((campaign: any) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {data?.slice(0, 4).map((campaign: any) => (
               <HotCampaignCard key={campaign.id} campaign={campaign} />
             ))}
           </div>
