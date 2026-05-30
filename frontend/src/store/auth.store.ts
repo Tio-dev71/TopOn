@@ -11,6 +11,7 @@ interface User {
     fullName?: string;
     avatarUrl?: string;
     companyName?: string;
+    username?: string;
   };
   reviewerProfile?: any;
   advertiserProfile?: any;
