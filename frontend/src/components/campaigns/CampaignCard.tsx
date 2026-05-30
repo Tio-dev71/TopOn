@@ -17,6 +17,8 @@ interface Campaign {
   categories: string[];
   isFeatured?: boolean;
   type: string;
+  maxReviewers?: number;
+  totalSlots?: number;
   _count?: { applications: number };
   advertiser?: {
     companyName?: string;
@@ -97,7 +99,7 @@ export default function CampaignCard({ campaign, featured = false }: { campaign:
 
           {/* Applicants */}
           <div className="text-[9px] text-gray-500 mb-1.5">
-             Đã ứng tuyển {campaign._count?.applications || 0} / {campaign.maxReviewers || 50}
+             Đã ứng tuyển {campaign._count?.applications || 0} / {campaign.maxReviewers ?? campaign.totalSlots ?? 50}
           </div>
 
           {/* Points/Price */}
