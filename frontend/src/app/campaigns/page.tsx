@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
+import Link from 'next/link';
 import CampaignCard from '@/components/campaigns/CampaignCard';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
