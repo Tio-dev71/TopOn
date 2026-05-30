@@ -10,6 +10,7 @@ interface User {
   profile?: {
     fullName?: string;
     avatarUrl?: string;
+    companyName?: string;
   };
   reviewerProfile?: any;
   advertiserProfile?: any;
