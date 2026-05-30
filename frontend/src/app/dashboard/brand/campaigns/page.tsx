@@ -30,7 +30,7 @@ export default function BrandCampaignsPage() {
         </h2>
         <Link 
           href="/campaigns/create"
-          className="px-6 py-1.5 bg-[#00a65a] text-white font-bold text-[10px] rounded flex items-center gap-2 hover:bg-green-600 transition-colors"
+          className="px-6 py-1.5 bg-[#2563eb] text-white font-bold text-[10px] rounded flex items-center gap-2 hover:bg-blue-700 transition-colors"
         >
           + Tạo chiến dịch mới
         </Link>

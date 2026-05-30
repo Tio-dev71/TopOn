@@ -37,7 +37,7 @@ export default function BrandDashboardLayout({ children }: { children: React.Rea
       <Navbar />
       
       {/* Green Header Banner */}
-      <div className="h-48 bg-[#00a65a] w-full mt-0"></div>
+      <div className="h-48 bg-[#2563eb] w-full mt-0"></div>
 
       <main className="flex-1 max-w-[1200px] w-full mx-auto px-4 sm:px-6 -mt-24 mb-20 relative z-10">
         {/* Brand Summary Card */}

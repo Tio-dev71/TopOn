@@ -11,7 +11,7 @@ export default function BrandDashboardPage() {
         {/* Top Header Row in Dashboard */}
         <div className="flex items-center justify-between border-b border-gray-100 pb-2">
           <h2 className="text-[15px] font-bold text-gray-900">Hồ sơ nhãn hàng</h2>
-          <button className="bg-[#00a65a] text-white text-[11px] font-bold px-4 py-1.5 rounded-full flex items-center gap-2">
+          <button className="bg-[#2563eb] text-white text-[11px] font-bold px-4 py-1.5 rounded-full flex items-center gap-2">
             💰 5.000.000 đ
           </button>
         </div>

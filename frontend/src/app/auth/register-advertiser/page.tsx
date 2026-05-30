@@ -54,7 +54,7 @@ export default function RegisterAdvertiserPage() {
             Với những nhãn hàng và đại lý quảng cáo có nhu cầu lượng content lớn<br />
             Topon đem lại giải pháp phù hợp nhất.
           </h1>
-          <button className="bg-[#2cb55e] text-white px-8 py-3 rounded font-semibold hover:bg-[#259f51] transition-all">
+          <button className="bg-[#2563eb] text-white px-8 py-3 rounded font-semibold hover:bg-[#1d4ed8] transition-all">
             Đăng ký ngay
           </button>
 
@@ -351,7 +351,7 @@ export default function RegisterAdvertiserPage() {
                        <button
                          type="submit"
                          disabled={isSubmitting}
-                         className="w-full py-3.5 bg-[#2cb55e] text-white text-sm font-bold mt-2 hover:bg-[#259f51] transition-colors disabled:opacity-60 flex items-center justify-center"
+                         className="w-full py-3.5 bg-[#2563eb] text-white text-sm font-bold mt-2 hover:bg-[#1d4ed8] transition-colors disabled:opacity-60 flex items-center justify-center"
                        >
                          {isSubmitting ? (
                            <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />

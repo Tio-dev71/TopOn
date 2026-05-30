@@ -290,7 +290,7 @@ export default function AdminDashboardPage() {
                     <div>
                       {w.status === 'PENDING' ? (
                         <div className="flex gap-2">
-                          <button onClick={() => handleApproveWithdrawal(w.id)} className="px-4 py-2 bg-green-500 text-white font-bold text-sm rounded-lg hover:bg-green-600 transition-colors">
+                          <button onClick={() => handleApproveWithdrawal(w.id)} className="px-4 py-2 bg-green-500 text-white font-bold text-sm rounded-lg hover:bg-blue-700 transition-colors">
                             Xác nhận chuyển
                           </button>
                           <button onClick={() => handleRejectWithdrawal(w.id)} className="px-4 py-2 bg-white text-blue-600 border border-blue-200 font-bold text-sm rounded-lg hover:bg-blue-50 transition-colors">

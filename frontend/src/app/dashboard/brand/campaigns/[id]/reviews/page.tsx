@@ -66,7 +66,7 @@ export default function BrandReviewApprovalPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-2 ${activeTab === tab ? 'text-[#00a65a] border-b-2 border-[#00a65a]' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`pb-2 ${activeTab === tab ? 'text-[#2563eb] border-b-2 border-[#2563eb]' : 'text-gray-400 hover:text-gray-600'}`}
             >
               {tab}
             </button>
@@ -109,7 +109,7 @@ export default function BrandReviewApprovalPage() {
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <button className="px-4 py-1.5 bg-[#00a65a] text-white font-bold text-[10px] rounded flex items-center gap-1 hover:bg-green-600 transition-colors">
+                    <button className="px-4 py-1.5 bg-[#2563eb] text-white font-bold text-[10px] rounded flex items-center gap-1 hover:bg-blue-700 transition-colors">
                       <Check className="w-3 h-3" /> Duyệt
                     </button>
                     <button className="px-4 py-1.5 border border-gray-200 text-gray-600 font-bold text-[10px] rounded flex items-center gap-1 hover:bg-gray-50 transition-colors">

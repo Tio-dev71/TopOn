@@ -22,7 +22,7 @@ export default function BrandCampaignDetailPage() {
           <span className="text-gray-900">Review Quán ABC</span>
         </div>
         <div className="flex items-center gap-2">
-          <button className="px-6 py-1.5 bg-[#00a65a] text-white font-bold text-[10px] rounded hover:bg-green-600 transition-colors">
+          <button className="px-6 py-1.5 bg-[#2563eb] text-white font-bold text-[10px] rounded hover:bg-blue-700 transition-colors">
             + Chỉnh sửa
           </button>
           <button className="px-4 py-1.5 border border-gray-200 text-gray-600 font-bold text-[10px] rounded hover:bg-gray-50 transition-colors">

@@ -28,11 +28,11 @@ export default function CreateCampaignWizard() {
             <div key={stepNum} className="flex items-center gap-2">
               <div className="flex items-center gap-1.5">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                  isActive || isPassed ? 'bg-[#00a65a] text-white' : 'bg-gray-100 text-gray-400'
+                  isActive || isPassed ? 'bg-[#2563eb] text-white' : 'bg-gray-100 text-gray-400'
                 }`}>
                   {stepNum}
                 </div>
-                <span className={`text-[11px] ${isActive ? 'text-gray-900 font-bold border-b-2 border-[#00a65a] pb-1' : 'text-gray-400'}`}>
+                <span className={`text-[11px] ${isActive ? 'text-gray-900 font-bold border-b-2 border-[#2563eb] pb-1' : 'text-gray-400'}`}>
                   {title}
                 </span>
               </div>
@@ -57,19 +57,19 @@ export default function CreateCampaignWizard() {
         <div>
           <label className="block text-[11px] font-bold text-gray-700 mb-2">Loại chiến dịch</label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <div className="border border-gray-100 rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#00a65a] relative">
+             <div className="border border-gray-100 rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#2563eb] relative">
                <span className="text-2xl">🛍️</span>
                <span className="text-[11px] font-bold text-gray-700">Sản phẩm</span>
              </div>
-             <div className="border border-gray-100 rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#00a65a] relative">
+             <div className="border border-gray-100 rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#2563eb] relative">
                <span className="text-2xl">💆</span>
                <span className="text-[11px] font-bold text-gray-700">Dịch vụ</span>
              </div>
-             <div className="border border-[#00a65a] rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer bg-green-50/30 relative">
+             <div className="border border-[#2563eb] rounded p-4 flex flex-col items-center justify-center gap-2 cursor-pointer bg-green-50/30 relative">
                <span className="text-2xl">🏪</span>
                <span className="text-[11px] font-bold text-gray-700">Địa điểm</span>
                <span className="text-[9px] text-gray-500">🏢 ABC Coffee</span>
-               <div className="absolute top-2 right-2 w-4 h-4 bg-[#00a65a] rounded text-white flex items-center justify-center">
+               <div className="absolute top-2 right-2 w-4 h-4 bg-[#2563eb] rounded text-white flex items-center justify-center">
                  <Check className="w-3 h-3" />
                </div>
              </div>
@@ -80,7 +80,7 @@ export default function CreateCampaignWizard() {
            <div className="flex items-center justify-between">
              <span className="text-[11px] font-bold text-gray-700">Reviewer có thể tự trải nghiệm trước?</span>
              <div className="flex items-center gap-2">
-               <div className="w-10 h-5 bg-[#00a65a] rounded-full relative cursor-pointer">
+               <div className="w-10 h-5 bg-[#2563eb] rounded-full relative cursor-pointer">
                   <div className="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 shadow-sm"></div>
                </div>
                <span className="text-[11px] text-gray-600 w-8">Có</span>
@@ -89,7 +89,7 @@ export default function CreateCampaignWizard() {
            <div className="flex items-center justify-between">
              <span className="text-[11px] font-bold text-gray-700">Chiến dịch thanh toán thù lao</span>
              <div className="flex items-center gap-2">
-               <div className="w-10 h-5 bg-[#00a65a] rounded-full relative cursor-pointer">
+               <div className="w-10 h-5 bg-[#2563eb] rounded-full relative cursor-pointer">
                   <div className="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 shadow-sm"></div>
                </div>
                <span className="text-[11px] text-gray-600 w-8">Không</span>
@@ -112,7 +112,7 @@ export default function CreateCampaignWizard() {
         <button className="px-6 py-2 border border-gray-200 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-50 transition-colors">
           Hủy bỏ
         </button>
-        <button onClick={() => setStep(2)} className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+        <button onClick={() => setStep(2)} className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
           Bước tiếp theo
         </button>
       </div>
@@ -133,8 +133,8 @@ export default function CreateCampaignWizard() {
         <div>
           <label className="block text-[11px] font-bold text-gray-700 mb-2">Từ khóa bắt buộc</label>
           <div className="w-full border border-gray-200 rounded p-2 flex flex-wrap gap-2 items-center bg-white min-h-[42px]">
-            <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#ABC</span>
-            <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#Revu</span>
+            <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#ABC</span>
+            <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#Revu</span>
             <input type="text" className="flex-1 min-w-[100px] border-none focus:outline-none text-[11px]" />
             <button className="text-gray-400 hover:text-gray-600 ml-auto"><Camera className="w-4 h-4" /></button>
           </div>
@@ -144,23 +144,23 @@ export default function CreateCampaignWizard() {
           <div>
             <label className="block text-[11px] font-bold text-gray-700 mb-4">Kênh review phù hợp</label>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#00a65a] cursor-pointer">
-                 <div className="w-4 h-4 rounded border border-[#00a65a] bg-[#00a65a] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
+               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#2563eb] cursor-pointer">
+                 <div className="w-4 h-4 rounded border border-[#2563eb] bg-[#2563eb] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
                  <span className="text-[11px] font-bold text-gray-800">Facebook</span>
                </label>
-               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#00a65a] cursor-pointer">
-                 <div className="w-4 h-4 rounded border border-[#00a65a] bg-[#00a65a] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
+               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#2563eb] cursor-pointer">
+                 <div className="w-4 h-4 rounded border border-[#2563eb] bg-[#2563eb] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
                  <span className="text-[11px] font-bold text-gray-800">TikTok</span>
                </label>
-               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#00a65a] cursor-pointer">
-                 <div className="w-4 h-4 rounded border border-[#00a65a] bg-[#00a65a] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
+               <label className="flex items-center gap-2 bg-[#e6f6f0] px-3 py-2 rounded border border-[#2563eb] cursor-pointer">
+                 <div className="w-4 h-4 rounded border border-[#2563eb] bg-[#2563eb] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
                  <span className="text-[11px] font-bold text-gray-800">Instagram</span>
                </label>
-               <label className="flex items-center gap-2 border border-gray-200 px-3 py-2 rounded bg-white cursor-pointer hover:border-[#00a65a]">
+               <label className="flex items-center gap-2 border border-gray-200 px-3 py-2 rounded bg-white cursor-pointer hover:border-[#2563eb]">
                  <div className="w-4 h-4 rounded border border-gray-300 bg-white"></div>
                  <span className="text-[11px] font-bold text-gray-600">YouTube</span>
                </label>
-               <label className="flex items-center gap-2 border border-gray-200 px-3 py-2 rounded bg-white cursor-pointer hover:border-[#00a65a]">
+               <label className="flex items-center gap-2 border border-gray-200 px-3 py-2 rounded bg-white cursor-pointer hover:border-[#2563eb]">
                  <div className="w-4 h-4 rounded border border-gray-300 bg-white"></div>
                  <span className="text-[11px] font-bold text-gray-600">Blog</span>
                </label>
@@ -189,7 +189,7 @@ export default function CreateCampaignWizard() {
         <button onClick={() => setStep(1)} className="px-6 py-2 border border-gray-200 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-50 transition-colors">
           Quay lại
         </button>
-        <button onClick={() => setStep(3)} className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+        <button onClick={() => setStep(3)} className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
           Bước tiếp theo
         </button>
       </div>
@@ -212,7 +212,7 @@ export default function CreateCampaignWizard() {
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="radio" name="reward" defaultChecked className="hidden" />
-              <div className="w-10 h-5 bg-[#00a65a] rounded-full relative cursor-pointer">
+              <div className="w-10 h-5 bg-[#2563eb] rounded-full relative cursor-pointer">
                   <div className="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 shadow-sm"></div>
               </div>
               <span className="text-[11px] font-bold text-gray-900">Thù lao</span>
@@ -265,7 +265,7 @@ export default function CreateCampaignWizard() {
         <button onClick={() => setStep(2)} className="px-6 py-2 border border-gray-200 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-50 transition-colors">
           Quay lại
         </button>
-        <button onClick={() => setStep(4)} className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+        <button onClick={() => setStep(4)} className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
           Bước tiếp theo
         </button>
       </div>
@@ -282,11 +282,11 @@ export default function CreateCampaignWizard() {
           <label className="block text-[11px] font-bold text-gray-700 mb-4 border-b border-gray-100 pb-2">Bộ lọc mạng xã hội</label>
           <div className="flex items-center gap-6 mb-6">
             <label className="flex items-center gap-2 cursor-pointer">
-              <div className="w-4 h-4 rounded border border-[#00a65a] bg-[#00a65a] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
+              <div className="w-4 h-4 rounded border border-[#2563eb] bg-[#2563eb] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
               <span className="text-[11px] font-bold text-gray-800">Facebook</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
-              <div className="w-4 h-4 rounded border border-[#00a65a] bg-[#00a65a] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
+              <div className="w-4 h-4 rounded border border-[#2563eb] bg-[#2563eb] text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>
               <span className="text-[11px] font-bold text-gray-800">Dịch vụ</span>
             </label>
           </div>
@@ -325,10 +325,10 @@ export default function CreateCampaignWizard() {
           <div className="mb-6">
              <label className="block text-[10px] font-bold text-gray-700 mb-2">Từ khóa loại Reviewer:</label>
              <div className="w-full border border-gray-200 rounded p-2 flex flex-wrap gap-2 items-center bg-gray-50 min-h-[42px]">
-               <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#cà phê</span>
-               <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#ẩm thực</span>
-               <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#Hà Nội</span>
-               <span className="bg-[#e6f6f0] text-[#00a65a] px-2 py-1 rounded text-[10px] font-bold">#chụp ảnh</span>
+               <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#cà phê</span>
+               <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#ẩm thực</span>
+               <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#Hà Nội</span>
+               <span className="bg-[#e6f6f0] text-[#2563eb] px-2 py-1 rounded text-[10px] font-bold">#chụp ảnh</span>
              </div>
           </div>
 
@@ -342,7 +342,7 @@ export default function CreateCampaignWizard() {
         <button onClick={() => setStep(3)} className="px-6 py-2 border border-gray-200 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-50 transition-colors">
           Quay lại
         </button>
-        <button onClick={() => setStep(5)} className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+        <button onClick={() => setStep(5)} className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
           Bước tiếp theo
         </button>
       </div>
@@ -418,7 +418,7 @@ export default function CreateCampaignWizard() {
               USD ($)
             </button>
           </div>
-          <button className="w-full py-3 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors mb-3">
+          <button className="w-full py-3 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors mb-3">
             Nạp nhanh 5,000,000đ để triển khai chiến dịch
           </button>
           <div className="text-[10px] text-gray-500 hover:text-gray-900 cursor-pointer">+ Nạp số tiền khác</div>
@@ -430,7 +430,7 @@ export default function CreateCampaignWizard() {
         <button onClick={() => setStep(4)} className="px-6 py-2 border border-gray-200 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-50 transition-colors">
           Quay lại
         </button>
-        <button className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+        <button className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
           Nạp ngân sách & Đăng ký
         </button>
       </div>

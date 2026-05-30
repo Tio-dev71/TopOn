@@ -143,7 +143,7 @@ function RegisterPageContent() {
             type="submit"
             id="btn-register-submit"
             disabled={isSubmitting}
-            className="w-full py-3 bg-[#2cb55e] text-white text-sm font-semibold rounded hover:bg-[#259f51] transition-all disabled:opacity-60 flex items-center justify-center mt-2"
+            className="w-full py-3 bg-[#2563eb] text-white text-sm font-semibold rounded hover:bg-[#1d4ed8] transition-all disabled:opacity-60 flex items-center justify-center mt-2"
           >
             {isSubmitting ? (
               <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />

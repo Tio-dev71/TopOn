@@ -88,7 +88,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
           {/* Checkboxes */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 mb-8">
             <label className="flex items-center gap-2 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.onTime ? 'bg-[#00a65a] border-[#00a65a] text-white' : 'border-gray-300 bg-white group-hover:border-[#00a65a]'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.onTime ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-gray-300 bg-white group-hover:border-[#2563eb]'}`}>
                 {criteria.onTime && <Check className="w-3 h-3" />}
               </div>
               <span className="text-[12px] text-gray-600 font-semibold">Giao bài đúng hạn</span>
@@ -96,7 +96,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.considerDeadline ? 'bg-[#00a65a] border-[#00a65a] text-white' : 'border-gray-300 bg-white group-hover:border-[#00a65a]'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.considerDeadline ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-gray-300 bg-white group-hover:border-[#2563eb]'}`}>
                 {criteria.considerDeadline && <Check className="w-3 h-3" />}
               </div>
               <span className="text-[12px] text-gray-600 font-semibold">Cân nhắc deadline</span>
@@ -104,7 +104,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.correctBrief ? 'bg-[#00a65a] border-[#00a65a] text-white' : 'border-gray-300 bg-white group-hover:border-[#00a65a]'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.correctBrief ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-gray-300 bg-white group-hover:border-[#2563eb]'}`}>
                 {criteria.correctBrief && <Check className="w-3 h-3" />}
               </div>
               <span className="text-[12px] text-gray-600 font-semibold">Nội dung đúng brief</span>
@@ -112,7 +112,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.incorrectContent ? 'bg-[#00a65a] border-[#00a65a] text-white' : 'border-gray-300 bg-white group-hover:border-[#00a65a]'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.incorrectContent ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-gray-300 bg-white group-hover:border-[#2563eb]'}`}>
                 {criteria.incorrectContent && <Check className="w-3 h-3" />}
               </div>
               <span className="text-[12px] text-gray-600 font-semibold">Nội dung chưa đúng yêu cầu</span>
@@ -120,7 +120,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.goodAttitude ? 'bg-[#00a65a] border-[#00a65a] text-white' : 'border-gray-300 bg-white group-hover:border-[#00a65a]'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${criteria.goodAttitude ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-gray-300 bg-white group-hover:border-[#2563eb]'}`}>
                 {criteria.goodAttitude && <Check className="w-3 h-3" />}
               </div>
               <span className="text-[12px] text-gray-600 font-semibold">Thái độ hợp tác tốt</span>
@@ -133,7 +133,7 @@ export default function ReviewModal({ isOpen, onClose, reviewerName, reviewerUse
             <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-600 font-bold text-[11px] rounded hover:bg-gray-200 transition-colors">
               Hủy
             </button>
-            <button className="px-6 py-2 bg-[#00a65a] text-white font-bold text-[11px] rounded hover:bg-green-600 transition-colors">
+            <button className="px-6 py-2 bg-[#2563eb] text-white font-bold text-[11px] rounded hover:bg-blue-700 transition-colors">
               Lưu đánh giá
             </button>
           </div>
