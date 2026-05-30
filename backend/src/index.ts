@@ -26,6 +26,7 @@ import ratingRoutes from './routes/rating.routes';
 import notificationRoutes from './routes/notification.routes';
 import blogRoutes from './routes/blog.routes';
 import adminRoutes from './routes/admin.routes';
+import messageRoutes from './routes/message.routes';
 
 const app = express();
 const server = http.createServer(app);
@@ -88,6 +89,7 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Health check
 app.get('/health', (_req, res) => {

@@ -6,9 +6,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 export default function QAPage() {
   const [view, setView] = useState<'list' | 'create'>('list');
 
-  const DUMMY_DATA = [
-    { id: 1, title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum?', date: '23/01/24', status: '-' }
-  ];
 
   if (view === 'create') {
     return (
@@ -81,15 +78,13 @@ export default function QAPage() {
           <div className="w-24">Trạng thái</div>
         </div>
 
-        {/* Table Body */}
-        {DUMMY_DATA.map((item) => (
-          <div key={item.id} className="flex items-center text-[11px] text-gray-600 border-b border-gray-50 py-3 text-center px-4 hover:bg-gray-50 cursor-pointer">
-            <div className="w-12 text-left text-gray-400">{item.id}</div>
-            <div className="flex-1 text-left truncate pr-4">{item.title}</div>
-            <div className="w-24 text-gray-400">{item.date}</div>
-            <div className="w-24">{item.status}</div>
-          </div>
-        ))}
+        {/* Table Body - Empty State */}
+        <div className="text-center py-16 text-gray-400">
+          <div className="text-4xl mb-3">💬</div>
+          <div className="text-[12px] font-bold mb-1">Chưa có câu hỏi nào</div>
+          <div className="text-[11px]">Nhấn "Viết" để gửi câu hỏi đầu tiên của bạn.</div>
+        </div>
+
 
         {/* Pagination */}
         <div className="flex items-center justify-center gap-4 mt-8">
