@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { X, Star } from 'lucide-react';
+import { X, Star, Check } from 'lucide-react';
 
 interface ReviewModalProps {
   isOpen: boolean;
